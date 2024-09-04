@@ -1,0 +1,51 @@
+{% extends 'home/home.html' %}
+{% import 'ui/search_page.html' as pg %}
+
+{% block css %}
+    <style>
+        .container2{
+            margin-top:76px
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<!--内容-->
+ <div class="row">
+    <div class="col-md-12">
+         <ol class="breadcrumb" style="margin-top:6px;">
+            {% if movie_count == 0 %}
+                <li>没有找到任何与“{{ key }}”有关的视频资源</li>
+            {% elif key %}
+                <li>与“{{ key }}”有关的视频资源，共{{ movie_count }}部</li>
+            {% else %}
+                 <li>本站所有视频资源，共{{ movie_count }}部</li>
+            {% endif %}
+        </ol>
+    </div>
+    <div class="col-md-12">
+        {% for v in page_data.items %}
+        <div class="media">
+            <div class="media-left">
+                <a href="{{ url_for('home.video',id=v.id,page=1) }}">
+                    <img class="media-object" style="width: 131px;height: 83px;" src="{{ url_for('static',filename='uploads/'+v.logo) }}" alt="{{ v.title }}">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="{{ url_for('home.video',id=v.id,page=1) }}" style="color: #000000;text-decoration:none; ">{{ v.title }}</a>
+                    <a href="{{ url_for('home.video',id=v.id,page=1) }}" class="label label-primary pull-right">
+                    <span class="glyphicon glyphicon-play"></span>播放视频</a>
+                </h4>
+                {{ v.info }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-md-12 text-center">
+        {% if movie_count %}
+            {{ pg.page(page_data,'home.search') }}
+        {% endif %}
+    </div>
+</div>
+<!--内容-->
+{% endblock %}
